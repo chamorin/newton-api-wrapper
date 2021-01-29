@@ -24,7 +24,7 @@ class NewtonAPI:
 
         # If the request has a body, you would use this instead of empty string below (replace BODY with actual request body):
         if body != "":
-            hashed_body = sha256(body).hexdigest()
+            hashed_body = sha256(body.encode(ENCODING)).hexdigest()
         else:
             hashed_body = body
 
@@ -77,7 +77,7 @@ class NewtonAPI:
         return response_to_json(r.text)
 
     # PRIVATE requests
-    def get_actions(self, action_type="DEPOSIT", start_date="", end_date="", limit=1, offset=1):
+    def get_actions(self, action_type="DEPOSIT", start_date="", end_date="", limit="", offset=""):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/actions")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -103,7 +103,7 @@ class NewtonAPI:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    def get_order_history(self, start_date="", end_date="", limit=1, offset=1, symbol="", time_in_force=""):
+    def get_order_history(self, start_date="", end_date="", limit="", offset="", symbol="", time_in_force=""):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/order/history")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -120,7 +120,7 @@ class NewtonAPI:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    def get_open_orders(self, limit=1, offset=1, symbol="", time_in_force=""):
+    def get_open_orders(self, limit="", offset="", symbol="", time_in_force=""):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/order/open")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -134,16 +134,35 @@ class NewtonAPI:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    def new_order(self, limit=1, offset=1, symbol="", time_in_force=""):
+    # order_type = ["LIMIT", ""]
+    # side = ["BUY", "SELL"]
+    # Open order: {'order_type': ['This field is required.'], 'time_in_force': ['This field is required.'], 'side': ['This field is required.'], 'symbol': ['This field is required.'], 'quantity': ['This field is required.'], 'price': ['This field is required.']}
+    def new_order(self, order_type, time_in_force, side, symbol, quantity, price):
+        body = '{"order_type":"'+str(order_type)+'", "time_in_force":"'+str(time_in_force)+'", "side":"' + \
+            str(side)+'", "symbol":"'+str(symbol)+'","quantity":"' + \
+            str(quantity)+'","price":"'+str(price)+'"}'
+
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
-            "POST", "/order/new")
-        headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
+            "POST", "/order/new", "application/json", body)
+        headers = {'NewtonAPIAuth': NewtonAPIAuth,
+                   'NewtonDate': NewtonDate, 'Content-type': 'application/json'}
 
-        params = {
-            'limit': limit, 'offset': offset,
-            'symbol': symbol, 'time_in_force': time_in_force
-        }
+        params = {}
 
-        r = requests.post(BASE_URL + "/order/open",
-                          headers=headers, params=params)
+        r = requests.post(BASE_URL + "/order/new",
+                          headers=headers, params=params, data=body)
+        return response_to_json(r.text)
+
+    def cancel_order(self, order_id):
+        body = '{"order_id":"'+str(order_id)+'"}'
+
+        NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
+            "POST", "/order/cancel", "application/json", body)
+        headers = {'NewtonAPIAuth': NewtonAPIAuth,
+                   'NewtonDate': NewtonDate, 'Content-type': 'application/json'}
+
+        params = {}
+
+        r = requests.post(BASE_URL + "/order/cancel",
+                          headers=headers, params=params, data=body)
         return response_to_json(r.text)
