@@ -1,10 +1,6 @@
-# newton-api-wrapper :apple:
-
-## Usage
-
-```python
 import os
-import NewtonAPI
+
+from src.newton import NewtonAPI
 
 newton = NewtonAPI(os.getenv("NEWTON_API_CLIENT_ID"),
                    os.getenv("NEWTON_API_SECRET_KEY"))
@@ -44,4 +40,3 @@ print("Account order history:", newton.get_order_history())
 
 # Get the list of all your open orders.
 print("Account open orders:", newton.get_open_orders())
-```
