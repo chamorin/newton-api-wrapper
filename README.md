@@ -1,4 +1,13 @@
-# newton-api-wrapper :apple:
+# (WIP) newton-api-wrapper :apple:
+
+This project contains the code of a wrapper for Newton Pro API made in python. [Newton](https://www.newton.co/) is Canada's first no-fee cryptocurrency brokerage. Here's the [documentation](https://newton.stoplight.io/docs/newton-api-docs/docs/authentication/Authentication.md) of the official Newton Pro API.
+
+## Requirements
+
+The `client_id` and the `secret_key` are required as parameter in the NewtonAPI for it to work (for private requests). 
+
+- **Client ID** : Is your unique client identifier. You can find this under the API Access settings in the [Newton web app](https://web.newton.co/).
+- **Client Secret Key** : Is your secret key that can be found in the API Access settings in the [Newton web app](https://web.newton.co/).
 
 ## Usage
 
