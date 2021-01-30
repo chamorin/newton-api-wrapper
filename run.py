@@ -5,6 +5,8 @@ from src.newton import NewtonAPI
 newton = NewtonAPI(os.getenv("NEWTON_API_CLIENT_ID"),
                    os.getenv("NEWTON_API_SECRET_KEY"))
 
+# Secret key is optional in the constructor and can be set after with the set_secret_key(SECRET_KEY) method
+# newton.set_secret_key(os.getenv("NEWTON_API_SECRET_KEY"))
 
 # PUBLIC
 
@@ -40,3 +42,6 @@ print("Account order history:", newton.get_order_history())
 
 # Get the list of all your open orders.
 print("Account open orders:", newton.get_open_orders())
+
+print(newton.new_order(order_type="LIMIT", time_in_force="IOC",
+                       side="SELL", price="20", quantity="0.00001", symbol="BTC_QCAD"))

@@ -14,11 +14,13 @@ BASE_URL = "https://api.newton.co/v1"
 
 class NewtonAPI:
 
-    def __init__(self, client_id, secret_key):
-        self.client_id = client_id
-        self.secret_key = secret_key
+    def __init__(self, client_id, secret_key=None):
+        self.__client_id = client_id
+        self.__secret_key = secret_key
 
     def __generate_signature_date(self, method, path, content_type="", body=""):
+
+        assert self.__secret_key, "Set secret key when using private requests"
 
         current_time = str(floor(datetime.now().timestamp()))
 
@@ -39,16 +41,19 @@ class NewtonAPI:
         signature_data = ":".join(signature_parameters).encode(ENCODING)
 
         computed_signature = hmac.new(
-            self.secret_key.encode(ENCODING),
+            self.__secret_key.encode(ENCODING),
             msg=signature_data,
             digestmod=sha256
         ).digest()
 
-        NewtonAPIAuth = self.client_id + ":" + \
+        NewtonAPIAuth = self.__client_id + ":" + \
             b64encode(computed_signature).decode()
         NewtonDate = current_time
 
         return [NewtonAPIAuth, NewtonDate]
+
+    def set_secret_key(self, secret_key):
+        self.__secret_key = secret_key
 
     # PUBLIC requests
     def get_fees(self):
@@ -153,6 +158,7 @@ class NewtonAPI:
                           headers=headers, params=params, data=body)
         return response_to_json(r.text)
 
+    # order_id = UUID
     def cancel_order(self, order_id):
         body = '{"order_id":"'+str(order_id)+'"}'
 
