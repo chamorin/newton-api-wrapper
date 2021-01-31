@@ -15,9 +15,13 @@ The `client_id` and the `secret_key` are required as parameter in the NewtonAPI 
 import os
 import NewtonAPI
 
+from src.newton import NewtonAPI
+
 newton = NewtonAPI(os.getenv("NEWTON_API_CLIENT_ID"),
                    os.getenv("NEWTON_API_SECRET_KEY"))
 
+# Secret key is optional in the constructor and can be set after with the set_secret_key(SECRET_KEY) method
+# newton.set_secret_key(os.getenv("NEWTON_API_SECRET_KEY"))
 
 # PUBLIC
 

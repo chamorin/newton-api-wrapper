@@ -78,11 +78,12 @@ class NewtonAPI:
 
     def get_symbols(self, base_asset="", quote_asset=""):
         params = {'base_asset': base_asset, 'quote_asset': quote_asset}
+        print(params)
         r = requests.get(BASE_URL + "/symbols", params=params)
         return response_to_json(r.text)
 
     # PRIVATE requests
-    def get_actions(self, action_type="DEPOSIT", start_date="", end_date="", limit="", offset=""):
+    def get_actions(self, action_type="", start_date="", end_date="", limit="", offset=""):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/actions")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}

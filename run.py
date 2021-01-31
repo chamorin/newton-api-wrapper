@@ -42,6 +42,3 @@ print("Account order history:", newton.get_order_history())
 
 # Get the list of all your open orders.
 print("Account open orders:", newton.get_open_orders())
-
-print(newton.new_order(order_type="LIMIT", time_in_force="IOC",
-                       side="SELL", price="20", quantity="0.00001", symbol="BTC_QCAD"))
