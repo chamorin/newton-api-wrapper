@@ -4,7 +4,7 @@ This project contains the code of a wrapper for Newton Pro API made in python. [
 
 ## Requirements
 
-The `client_id` and the `secret_key` are required as parameter in the NewtonAPI for it to work (for private requests). 
+The `client_id` and the `secret_key` are required as parameters in the Newton class for it to work (for private requests). 
 
 - **Client ID** : Is your unique client identifier. You can find this under the API Access settings in the [Newton web app](https://web.newton.co/).
 - **Client Secret Key** : Is your secret key that can be found in the API Access settings in the [Newton web app](https://web.newton.co/).
@@ -13,14 +13,14 @@ The `client_id` and the `secret_key` are required as parameter in the NewtonAPI 
 
 ```python
 import os
-import NewtonAPI
 
-from src.newton import NewtonAPI
+from newton_wrapper import Newton
 
-newton = NewtonAPI(os.getenv("NEWTON_API_CLIENT_ID"),
-                   os.getenv("NEWTON_API_SECRET_KEY"))
+newton = Newton(os.getenv("NEWTON_API_CLIENT_ID"),
+                os.getenv("NEWTON_API_SECRET_KEY"))
 
-# Secret key is optional in the constructor and can be set after with the set_secret_key(SECRET_KEY) method
+# Client id and secret key is optional in the constructor and can be set after with the set_client_id(CLIENT_ID) and set_secret_key(SECRET_KEY) methods
+# newton.set_client_id(os.getenv("NEWTON_API_CLIENT_ID"))
 # newton.set_secret_key(os.getenv("NEWTON_API_SECRET_KEY"))
 
 # PUBLIC

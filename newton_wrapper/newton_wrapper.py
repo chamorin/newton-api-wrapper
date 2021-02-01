@@ -1,4 +1,3 @@
-import os
 import hmac
 import requests
 from datetime import datetime
@@ -6,20 +5,22 @@ from base64 import b64encode
 from math import floor
 from hashlib import sha256
 
-from src.utils import response_to_json, convert_to_timestamp
+from .utils import response_to_json, convert_to_timestamp
+
 
 ENCODING = "utf-8"
 BASE_URL = "https://api.newton.co/v1"
 
 
-class NewtonAPI:
+class Newton:
 
-    def __init__(self, client_id, secret_key=None):
+    def __init__(self, client_id=None, secret_key=None):
         self.__client_id = client_id
         self.__secret_key = secret_key
 
     def __generate_signature_date(self, method, path, content_type="", body=""):
 
+        assert self.__client_id, "Set client id when using private requests"
         assert self.__secret_key, "Set secret key when using private requests"
 
         current_time = str(floor(datetime.now().timestamp()))
@@ -52,6 +53,9 @@ class NewtonAPI:
 
         return [NewtonAPIAuth, NewtonDate]
 
+    def set_client_id(self, client_id):
+        self.__client_id = client_id
+
     def set_secret_key(self, secret_key):
         self.__secret_key = secret_key
 
@@ -78,7 +82,6 @@ class NewtonAPI:
 
     def get_symbols(self, base_asset="", quote_asset=""):
         params = {'base_asset': base_asset, 'quote_asset': quote_asset}
-        print(params)
         r = requests.get(BASE_URL + "/symbols", params=params)
         return response_to_json(r.text)
 
@@ -140,7 +143,7 @@ class NewtonAPI:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    # order_type = ["LIMIT", ""]
+    # order_type = ["LIMIT"]
     # side = ["BUY", "SELL"]
     # Open order: {'order_type': ['This field is required.'], 'time_in_force': ['This field is required.'], 'side': ['This field is required.'], 'symbol': ['This field is required.'], 'quantity': ['This field is required.'], 'price': ['This field is required.']}
     def new_order(self, order_type, time_in_force, side, symbol, quantity, price):

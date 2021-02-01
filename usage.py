@@ -1,11 +1,15 @@
 import os
 
-from src.newton import NewtonAPI
+from newton_wrapper import Newton
 
-newton = NewtonAPI(os.getenv("NEWTON_API_CLIENT_ID"),
-                   os.getenv("NEWTON_API_SECRET_KEY"))
+from dotenv import load_dotenv
+load_dotenv()
 
-# Secret key is optional in the constructor and can be set after with the set_secret_key(SECRET_KEY) method
+newton = Newton(os.getenv("NEWTON_API_CLIENT_ID"),
+                os.getenv("NEWTON_API_SECRET_KEY"))
+
+# Client id and secret key is optional in the constructor and can be set after with the set_client_id(CLIENT_ID) and set_secret_key(SECRET_KEY) methods
+# newton.set_client_id(os.getenv("NEWTON_API_CLIENT_ID"))
 # newton.set_secret_key(os.getenv("NEWTON_API_SECRET_KEY"))
 
 # PUBLIC
