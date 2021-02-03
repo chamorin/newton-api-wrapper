@@ -156,10 +156,7 @@ class Newton:
         headers = {'NewtonAPIAuth': NewtonAPIAuth,
                    'NewtonDate': NewtonDate, 'Content-type': 'application/json'}
 
-        params = {}
-
-        r = requests.post(BASE_URL + "/order/new",
-                          headers=headers, params=params, data=body)
+        r = requests.post(BASE_URL + "/order/new", headers=headers, data=body)
         return response_to_json(r.text)
 
     # order_id = UUID
@@ -171,8 +168,6 @@ class Newton:
         headers = {'NewtonAPIAuth': NewtonAPIAuth,
                    'NewtonDate': NewtonDate, 'Content-type': 'application/json'}
 
-        params = {}
-
         r = requests.post(BASE_URL + "/order/cancel",
-                          headers=headers, params=params, data=body)
+                          headers=headers, data=body)
         return response_to_json(r.text)

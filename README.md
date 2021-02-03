@@ -1,6 +1,6 @@
 # (WIP) newton-api-wrapper :apple:
 
-This project contains the code of a wrapper for Newton Pro API made in python. [Newton](https://www.newton.co/) is Canada's first no-fee cryptocurrency brokerage. Here's the [documentation](https://newton.stoplight.io/docs/newton-api-docs/docs/authentication/Authentication.md) of the official Newton Pro API.
+This project contains the code of a wrapper for Newton Pro API made in python. [Newton](https://www.newton.co/) is Canada's first no-fee cryptocurrency brokerage. Here's the [documentation](https://newton.stoplight.io/docs/newton-api-docs/docs/authentication/Authentication.md) of the official Newton Pro API. I'm using `tox` to run tests.
 
 ## Requirements
 
@@ -58,3 +58,10 @@ print("Account order history:", newton.get_order_history())
 # Get the list of all your open orders.
 print("Account open orders:", newton.get_open_orders())
 ```
+
+## Potential Additions
+- Add parameters validation before request
+- Add enums for some parameters (ex: DEPOSIT,WITHDRAWAL,TRANSACT or IOC,GTC,GTD)
+- Improve `new_order` method (lack of documentation atm)
+- Add tests (hehe)
+- Add status code to return values
