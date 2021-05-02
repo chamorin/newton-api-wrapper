@@ -1,5 +1,6 @@
 import hmac
 import requests
+import socketio
 from datetime import datetime
 from base64 import b64encode
 from math import floor
@@ -10,6 +11,7 @@ from .utils import response_to_json, convert_to_timestamp
 
 ENCODING = "utf-8"
 BASE_URL = "https://api.newton.co/v1"
+WS_BASE_URL = "https://ws.newton.co"
 
 
 class Newton:
@@ -17,6 +19,8 @@ class Newton:
     def __init__(self, client_id=None, secret_key=None):
         self.__client_id = client_id
         self.__secret_key = secret_key
+        self.__sio = None
+        self.__feed = None
 
     def __generate_signature_date(self, method, path, content_type="", body=""):
 
@@ -171,3 +175,34 @@ class Newton:
         r = requests.post(BASE_URL + "/order/cancel",
                           headers=headers, data=body)
         return response_to_json(r.text)
+
+    def subscribe_to_feed(self, ns, symbol, candle=None):
+        self.disconnect_from_feed()
+        sio = socketio.Client()
+        self.__sio = sio
+
+        @sio.on('connect', namespace=ns)
+        def on_connect():
+            sio.emit('subscribe', namespace=ns)
+
+        @sio.event
+        def connect_error(message=None):
+            print('connection failed ', message)
+
+        @sio.event(namespace=ns)
+        def update(data):
+            self.__feed = data
+
+        url = WS_BASE_URL + ns + '/?symbol=' + symbol
+        if candle:
+            url += '&candle=' + candle
+        sio.connect(url, namespaces=[ns],  transports=['websocket'])
+
+    def get_feed(self):
+        return self.__feed
+
+    def disconnect_from_feed(self):
+        if self.__sio:
+            self.__sio.disconnect()
+            self.__sio = None
+            self.__feed = None
