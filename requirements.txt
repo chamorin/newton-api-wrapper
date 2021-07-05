@@ -1,7 +1,3 @@
 python-dotenv
-# newton.co uses v2.x JavaScript SocketIO lib, it corresponds
-# to python-socketio v4.x and python-engineio v3.x and more recent
-# versions of python libraries won't work with newton.co websocket API
-# pip install 'python-socketio>=4,<5' --user
-python-socketio>=4,<5
+python-socketio
 websocket-client
