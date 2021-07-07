@@ -16,6 +16,16 @@ WS_BASE_URL = "https://ws.newton.co"
 
 class Newton:
 
+    class ActionType():
+        DEPOSIT = "DEPOSIT"
+        WITHDRAWAL = "WITHDRAWAL"
+        TRANSACT = "TRANSACT"
+
+    class TimeInForce():
+        IOC = "IOC"
+        GTC = "GTC"
+        GTD = "GTD"
+
     def __init__(self, client_id=None, secret_key=None):
         self.__client_id = client_id
         self.__secret_key = secret_key
