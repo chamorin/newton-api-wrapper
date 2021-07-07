@@ -60,6 +60,8 @@ print("Account open orders:", newton.get_open_orders())
 ```
 
 ## Potential Additions
+- Add typing (for enums and parameters)
+- Add pre-commit hook for formatting and linting (flake8, black, isort)
 - Add parameters validation before request
 - Add enums for some parameters (ex: DEPOSIT,WITHDRAWAL,TRANSACT or IOC,GTC,GTD)
 - Improve `new_order` method (lack of documentation atm)
