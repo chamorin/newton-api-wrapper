@@ -20,11 +20,13 @@ class Newton:
         DEPOSIT = "DEPOSIT"
         WITHDRAWAL = "WITHDRAWAL"
         TRANSACT = "TRANSACT"
+        ALL = ""
 
     class TimeInForce():
         IOC = "IOC"
         GTC = "GTC"
         GTD = "GTD"
+        NONE = ""
 
     def __init__(self, client_id=None, secret_key=None):
         self.__client_id = client_id
@@ -100,7 +102,7 @@ class Newton:
         return response_to_json(r.text)
 
     # PRIVATE requests
-    def get_actions(self, action_type="", start_date="", end_date="", limit="", offset=""):
+    def get_actions(self, action_type: ActionType = ActionType.ALL, start_date="", end_date="", limit="", offset=""):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/actions")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -126,7 +128,7 @@ class Newton:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    def get_order_history(self, start_date="", end_date="", limit="", offset="", symbol="", time_in_force=""):
+    def get_order_history(self, start_date="", end_date="", limit="", offset="", symbol="", time_in_force: TimeInForce = TimeInForce.NONE):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/order/history")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -143,7 +145,7 @@ class Newton:
                          headers=headers, params=params)
         return response_to_json(r.text)
 
-    def get_open_orders(self, limit="", offset="", symbol="", time_in_force=""):
+    def get_open_orders(self, limit="", offset="", symbol="", time_in_force: TimeInForce = TimeInForce.NONE):
         NewtonAPIAuth, NewtonDate = self.__generate_signature_date(
             "GET", "/order/open")
         headers = {'NewtonAPIAuth': NewtonAPIAuth, 'NewtonDate': NewtonDate}
@@ -160,7 +162,7 @@ class Newton:
     # order_type = ["LIMIT"]
     # side = ["BUY", "SELL"]
     # Open order: {'order_type': ['This field is required.'], 'time_in_force': ['This field is required.'], 'side': ['This field is required.'], 'symbol': ['This field is required.'], 'quantity': ['This field is required.'], 'price': ['This field is required.']}
-    def new_order(self, order_type, time_in_force, side, symbol, quantity, price):
+    def new_order(self, order_type, side, symbol, quantity, price, time_in_force: TimeInForce = TimeInForce.NONE):
         body = '{"order_type":"'+str(order_type)+'", "time_in_force":"'+str(time_in_force)+'", "side":"' + \
             str(side)+'", "symbol":"'+str(symbol)+'","quantity":"' + \
             str(quantity)+'","price":"'+str(price)+'"}'
