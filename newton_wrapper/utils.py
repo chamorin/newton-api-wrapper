@@ -11,7 +11,7 @@ def response_to_json(response_text):
 
 def convert_to_timestamp(date):
     converted_date = None
-    if re.match(r'\d{10}(\.\d*)?', str(date)):
+    if re.match(r"\d{10}(\.\d*)?", str(date)):
         converted_date = int(date)
     elif isinstance(date, datetime):
         converted_date = int(date.timestamp())
