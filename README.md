@@ -1,4 +1,4 @@
-# (WIP) newton-api-wrapper :apple:
+# newton-api-wrapper :apple:
 
 This project contains the code of a wrapper for Newton Pro API made in python. [Newton](https://www.newton.co/) is Canada's first no-fee cryptocurrency brokerage. Here's the [documentation](https://newton.stoplight.io/docs/newton-api-docs/docs/authentication/Authentication.md) of the official Newton Pro API. I'm using `tox` to run tests.
 
